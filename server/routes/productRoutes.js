@@ -12,6 +12,7 @@ import {
   getCommentsController,
   searchProductController,
   deleteCommentController,
+  relatedProductController,
 } from "../controllers/productController.js";
 import formidable from "express-formidable";
 
@@ -57,6 +58,9 @@ router.post("/product-filters", filterProductController);
 
 //SEARCH PRODUCT
 router.get("/search-product/:keyword", searchProductController);
+
+//SIMILAR PRODUCT
+router.get("/related-product/:pid/:cid", relatedProductController);
 
 //ADD COMMENT
 router.post("/add-comment/:pid/comments", requireSignIn, addCommentController);

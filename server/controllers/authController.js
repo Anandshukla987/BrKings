@@ -1,4 +1,3 @@
-import { response } from "express";
 import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
@@ -234,7 +233,7 @@ export const logoutController = async (req, res) => {
     res
       .clearCookie("jwtoken", { httpOnly: true })
       .status(200)
-      .send({ success: true, message: "Logout successful" });
+      .send({ success: true, message: "Logout successfull" });
   } catch (error) {
     res.status(500).send({
       success: false,
