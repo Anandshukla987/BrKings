@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosToken from "../../utils/axiosconfig";
+import {Axios} from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 import { toast } from "react-toastify";
 
@@ -22,7 +22,7 @@ const signin = async (user) => {
 
 const logout = async () => {
   try {
-    const response = await axiosToken.get(`${base_url}user/logout`);
+    const response = await Axios.get(`${base_url}user/logout`);
     window.localStorage.clear("user");
     console.log("status", response.status);
 

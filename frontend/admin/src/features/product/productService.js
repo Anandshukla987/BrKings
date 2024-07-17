@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosToken from "../../utils/axiosconfig";
+import {Axios} from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const getProducts = async () => {
@@ -9,25 +9,25 @@ const getProducts = async () => {
 };
 const createProduct = async (product) => {
   console.log(product);
-  const response = await axiosToken.post(`${base_url}product/`, product);
+  const response = await Axios.post(`${base_url}product/`, product);
 
   return response.data;
 };
 
 const getProduct = async (id) => {
-  const response = await axiosToken.get(`${base_url}product/${id}`);
+  const response = await Axios.get(`${base_url}product/${id}`);
 
   return response.data;
 };
 
 const deleteProduct = async (id) => {
-  const response = await axiosToken.delete(`${base_url}product/${id}`);
+  const response = await Axios.delete(`${base_url}product/${id}`);
 
   return response.data;
 };
 const updateProduct = async (updateData) => {
   console.log(updateData);
-  const response = await axiosToken.put(`${base_url}product/${updateData.id}`, updateData.pData);
+  const response = await Axios.put(`${base_url}product/${updateData.id}`, updateData.pData);
 
   return response.data;
 };

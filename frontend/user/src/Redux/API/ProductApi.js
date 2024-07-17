@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosToken from "../../utils/axiosconfig";
+import {Axios} from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const getProducts = async () => {
@@ -9,7 +9,7 @@ const getProducts = async () => {
 };
 
 const getProduct = async (id) => {
-  const response = await axiosToken.get(`${base_url}product/${id}`);
+  const response = await Axios.get(`${base_url}product/${id}`);
 
   return response.data;
 };

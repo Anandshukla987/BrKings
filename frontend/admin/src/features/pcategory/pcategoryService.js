@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosToken from "../../utils/axiosconfig";
+import {Axios} from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 import { toast } from "react-toastify";
 
@@ -9,7 +9,7 @@ const getProductCategories = async () => {
   return response.data;
 };
 const createCategory = async (category) => {
-  const response = await axiosToken.post(`${base_url}category/`, category);
+  const response = await Axios.post(`${base_url}category/`, category);
   if(response){
     toast.success("Category Added")
   }
@@ -17,19 +17,19 @@ const createCategory = async (category) => {
 };
 
 const getProductCategory = async (id) => {
-  const response = await axiosToken.get(`${base_url}category/${id}`);
+  const response = await Axios.get(`${base_url}category/${id}`);
 
   return response.data;
 };
 
 const deleteProductCategory = async (id) => {
-  const response = await axiosToken.delete(`${base_url}category/${id}`);
+  const response = await Axios.delete(`${base_url}category/${id}`);
 
   return response.data;
 };
 const updateProductCategory = async (category) => {
   console.log(category);
-  const response = await axiosToken.put(
+  const response = await Axios.put(
     `${base_url}category/${category.id}`,
     { title: category.pCatData.title }
   );
