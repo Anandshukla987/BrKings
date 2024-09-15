@@ -19,7 +19,7 @@ const Cart = () => {
     dispatch(fetchCartItems("_"));
   }, [dispatch]);
 
-  console.log(cartItems.length, cartItems);
+  // console.log(cartItems.length, cartItems);
 
   // Calculate total price dynamically
   const totalPrice = cartItems.reduce((acc, item) => {

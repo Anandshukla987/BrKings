@@ -94,11 +94,9 @@ const ProductFilter = ({ onFilterChange, minPrice, maxPrice }) => {
               <input
                 type="checkbox"
                 id={category.title}
-                value={category.title.toLowerCase()}
+                value={category.title}
                 onChange={handleCategoryChange}
-                checked={selectedCategories.includes(
-                  category.title.toLowerCase()
-                )}
+                checked={selectedCategories.includes(category.title)}
                 className="mr-2"
               />
               <label htmlFor={category.title} className="text-white">

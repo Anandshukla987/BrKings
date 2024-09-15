@@ -14,7 +14,7 @@ import {
 const CartItem = ({ product, quantity }) => {
   const dispatch = useDispatch();
 
-  console.log(product);
+  // console.log(product);
   // Handle quantity change
   const onQtyChange = (newQty) => {
     if (newQty <= 0) return; // Prevent negative quantities

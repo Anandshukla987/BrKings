@@ -22,7 +22,7 @@ const logout = async () => {
   try {
     const response = await Axios.get(`/user/logout`);
     window.localStorage.clear("user");
-    console.log("status", response.status);
+    // console.log("status", response.status);
 
     return response.data;
   } catch (err) {
