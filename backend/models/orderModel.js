@@ -1,39 +1,24 @@
 const mongoose = require("mongoose"); // Erase if already required
+const { Schema } = mongoose;
 
+const paymentMethods = {
+  values: ["card", "cash"],
+  message: "enum validator failed for payment Methods",
+};
 // Declare the Schema of the Mongo model
 var orderSchema = new mongoose.Schema(
   {
-    products: [
-      {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-        },
-        count: Number,
-        // color: String,
-      },
-    ],
-    paymentIntent: {},
-    orderStatus: {
-      type: String,
-      default: "Not Processed",
-      enum: [
-        "Not Processed",
-        "Cash on Delivery",
-        "Processing",
-        "Dispatched",
-        "Cancelled",
-        "Delivered",
-      ],
-    },
-    orderby: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    items: { type: [Schema.Types.Mixed], required: true },
+    totalAmount: { type: Number },
+    totalItems: { type: Number },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    paymentMethod: { type: String, required: true, enum: paymentMethods },
+    paymentStatus: { type: String, default: "pending" },
+    status: { type: String, default: "pending" },
+    selectedAddress: { type: Schema.Types.Mixed, required: true },
+    trackingLink: { type: String },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 //Export the model

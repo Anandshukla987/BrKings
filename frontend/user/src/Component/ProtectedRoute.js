@@ -1,12 +1,22 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { Outlet, Navigate } from "react-router-dom";
-import { loginBox} from "../Redux/Slices/authSlice"; // Replace with your user slice
+import React, { useEffect } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ProtectedRoute = () => {
   const token = window.localStorage.getItem("user");
-  const dispatch = useDispatch();
-  return token ? <Outlet /> : <Navigate to={dispatch(loginBox())} />;
+  useEffect(() => {
+    if (!token) {
+      // Show a toast notification if token is not found
+      toast.error("Unauthorized access! Please log in.");
+    }
+  }, [token]);
+  return token ? (
+    <Outlet />
+  ) : (
+    <>
+      <Navigate to="/" />
+    </>
+  );
 };
 
 export default ProtectedRoute;

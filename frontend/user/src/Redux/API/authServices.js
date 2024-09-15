@@ -1,6 +1,5 @@
-import { Axios } from "../../utils/axiosconfig";
-import { base_url } from "../../utils/baseUrl";
 import { toast } from "react-toastify";
+import { Axios } from "../../utils/axiosconfig";
 
 const login = async (user) => {
   const response = await Axios.post(`/user/login`, user);

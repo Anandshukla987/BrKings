@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import FormatPrice from "../../Helper/FormatPrice";
-import Veg from "../../Images/VEG.png";
 
 const ProductCard = ({ product, image }) => {
   return (
@@ -28,7 +27,7 @@ const ProductCard = ({ product, image }) => {
                 <FormatPrice price={product?.price} />
               </span>
               <p className="flex gap-1">
-                <img className=" max-w-5" src={Veg} alt="Veg" />
+                <img className=" max-w-5" src="/Images/VEG.png" alt="Veg" />
                 Eggless
               </p>
             </div>

@@ -1,9 +1,8 @@
-import axios from "axios";
 import { Axios } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const getProducts = async () => {
-  const response = await axios.get(`${base_url}product/`);
+  const response = await Axios.get(`${base_url}product/`);
 
   return response.data;
 };
@@ -15,7 +14,7 @@ const getProduct = async (id) => {
 };
 
 const getProductCategories = async () => {
-  const response = await axios.get(`${base_url}category/`);
+  const response = await Axios.get(`${base_url}category/`);
 
   return response.data;
 };

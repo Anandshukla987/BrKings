@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import { BiEdit } from "react-icons/bi";
+import React, { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
+import { BiEdit } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, deleteAProduct } from "../features/product/productSlice";
 import { Link } from "react-router-dom";
 import CustomModal from "../components/CustomModal";
+import { deleteAProduct, getProducts } from "../features/product/productSlice";
 const columns = [
   {
     title: "SNo",
@@ -27,8 +27,8 @@ const columns = [
     sorter: (a, b) => a.category.length - b.category.length,
   },
   {
-    title: "Quantity",
-    dataIndex: "quantity",
+    title: "Stock",
+    dataIndex: "stock",
   },
   {
     title: "Price",
@@ -65,7 +65,7 @@ const Productlist = () => {
       title: productState[i].title,
       tags: productState[i].tags,
       category: productState[i].category,
-      quantity: productState[i].quantity,
+      stock: productState[i].stock,
       price: `${productState[i].price}`,
       action: (
         <>

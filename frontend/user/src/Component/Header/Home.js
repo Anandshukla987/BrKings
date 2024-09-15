@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../common/Loader/Loading";
 import ProductFilter from "../../common/ProductFilter"; // Import the new component
 import SortDropdown from "../../common/SortDropdown";
-import HeroImage from "../../Images/brauni-ai (1) 1.png";
 import { getProducts } from "../../Redux/Slices/itemSlice";
 import ProductCard from "../ProductCard/ProductCard";
 import "./Home.scss";
@@ -26,6 +25,9 @@ const Home = () => {
 
   // Extract isLoading, error, and products from the Redux state
   const { products, isLoading, error } = useSelector((state) => state.item);
+  const prices = products.map((product) => product.price);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
 
   // Filter products based on price, categories, and rating
   const filteredProd = (() => {
@@ -72,7 +74,7 @@ const Home = () => {
           </div>
           <div className="w-[30%] imgBox">
             <img
-              src={HeroImage}
+              src="/Images/brauni-ai.png"
               alt="Brownie"
               className="w-[100%] h-[100%] object-contain md:absolute md:top-[24px]"
             />
@@ -89,7 +91,11 @@ const Home = () => {
             <h1 className="font text-white text-3xl">Our Exclusive Picks</h1>
             <div className=" grid-cols-2 flex gap-2">
               <div className=" w-1/4 bg-black">
-                <ProductFilter onFilterChange={handleFilterChange} />
+                <ProductFilter
+                  onFilterChange={handleFilterChange}
+                  minPrice={minPrice}
+                  maxPrice={maxPrice}
+                />
               </div>
               <section className=" w-3/4">
                 <span className=" border-b-2">

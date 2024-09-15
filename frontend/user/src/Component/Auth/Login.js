@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  login,
-  closeLog,
-  signupBox,
-  selectAuthUser,
-} from "../../Redux/Slices/authSlice";
-import Logo from "../../Images/BrownieKing.png";
-import Cookie from "../../Images/brauni-ai (1) 1.png";
-import { Link, useNavigate } from "react-router-dom";
-import Loader from "../../common/Loader/Loading";
-
 import CancelIcon from "@mui/icons-material/Cancel";
-import "./Login.css";
+import React, { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  closeLog,
+  login,
+  selectAuthUser,
+  signupBox,
+} from "../../Redux/Slices/authSlice";
+import Loader from "../../common/Loader/Loading";
 import TextInput from "../../common/TextInput";
+import "./Login.css";
 
 const Login = () => {
   const auth = useSelector(selectAuthUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const refModel = useRef();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -35,10 +33,19 @@ const Login = () => {
     e.preventDefault();
     dispatch(login(values));
   };
+  const handleclose = (e) => {
+    if (refModel.current === e.target) {
+      dispatch(closeLog());
+    }
+  };
 
   return (
     <>
-      <div className="flex justify-center main">
+      <div
+        ref={refModel}
+        onClick={handleclose}
+        className="flex justify-center main"
+      >
         {auth.isLoading ? (
           <Loader />
         ) : (
@@ -49,7 +56,7 @@ const Login = () => {
             <div className="logo">
               <img
                 className="mx-auto h-25 w-auto"
-                src={Logo}
+                src="/Images/BrownieKing.png"
                 alt="Brownie King"
               />
               <h2 className="brownie text-center text-rose-550 ">
@@ -62,7 +69,6 @@ const Login = () => {
             <div className="card mt-2 flex-row">
               <div className="mt-3 sm:mx-auto  sm:max-w-sm  cred">
                 <form className="loginForm">
-
                   <TextInput
                     label="Email"
                     name="email"
@@ -88,8 +94,8 @@ const Login = () => {
                   >
                     Login
                   </button>
-                  
-                  <a
+
+                  <p
                     className="mt-4 text-center text-sm cursor-pointer text-gray-900"
                     onClick={() => {
                       navigate("/forgotPass");
@@ -97,7 +103,7 @@ const Login = () => {
                     }}
                   >
                     Forgot Password?
-                  </a>
+                  </p>
                 </form>
                 <p className="mt-8 text-center text-sm text-gray-900">
                   Not a member?{" "}
@@ -108,15 +114,15 @@ const Login = () => {
                     }}
                   >
                     {/* {console.log("signup")} */}
-                    <a className="font-semibold leading-6 text-rose-950 hover:text-amber-500">
+                    <p className="font-semibold leading-6 text-rose-950 hover:text-amber-500">
                       Signup
-                    </a>
+                    </p>
                   </Link>
                 </p>
               </div>
 
               <div className="cookie hidden md:block">
-                <img src={Cookie} alt="Cookie" />
+                <img src="/Images/brauni-ai.png" alt="Cookie" />
               </div>
             </div>
           </div>

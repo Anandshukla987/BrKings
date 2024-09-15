@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { FaCartArrowDown } from "react-icons/fa";
 import { TbReceiptTax } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import FormatPrice from "../../Helper/FormatPrice";
-import Experience from "../../Images/Rectangle 4291.png";
-import { addToCart } from "../../Redux/Slices/Cart";
+import { addProductToCart } from "../../Redux/Slices/CartSlice";
 import {
   getProductByIdAsync,
   selectProductById,
@@ -47,13 +48,19 @@ const ProductPage = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      dispatch(addToCart(product));
+      dispatch(
+        addProductToCart({
+          productId: product._id,
+          quantity: 1,
+          size: product.size,
+        })
+      );
     }
   };
 
   if (status === "loading") {
     return (
-      <div className="bg-black">
+      <div>
         <Loader />
       </div>
     ); // Show loading state
@@ -76,7 +83,7 @@ const ProductPage = () => {
                   <h1 className="text-2xl lg:text-3xl font-semibold text-white font">
                     {product.title}
                   </h1>
-                  <p className="text-semibold text-xl lg:text-2xl my-3 text-white font">
+                  <h4 className="text-semibold text-xl lg:text-2xl my-3 text-white font">
                     <FormatPrice price={product?.price} />
                     <p className=" text-base flex flex-row items-center">
                       <span className="p-1.5">
@@ -84,7 +91,7 @@ const ProductPage = () => {
                       </span>
                       Tax Included
                     </p>
-                  </p>
+                  </h4>
                   <p className="text-semibold text-white font text-sx lg:text-lg font">
                     Double Chocolate Delight With A Taste of Walnut Crunch is a
                     recipe for double chocolate cookies with lots of walnuts.
@@ -119,12 +126,28 @@ const ProductPage = () => {
                       ))}
                     </div>
                   )}
-                  <button
-                    className="mt-3 rounded-md bg-amber-600 px-2 py-1.5 lg:mx-6 text-xl font-semibold leading-10 text-white shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 lg:w-1/2 transform transition duration-300 hover:scale-110"
-                    onClick={handleAddToCart}
-                  >
-                    Add to Cart
-                  </button>
+                  <div className="flex justify-around flex-wrap">
+                    <button
+                      className="mt-3 rounded-md bg-amber-600 px-2 py-1.5 lg:mx-6 text-xl font-semibold leading-10 text-white shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600  transform transition duration-300 hover:scale-110"
+                      onClick={handleAddToCart}
+                    >
+                      <span className="flex justify-center text-center items-center gap-2">
+                        <FaCartArrowDown />
+                        Add to Cart
+                      </span>
+                    </button>
+                    <NavLink to="/cart">
+                      <button
+                        className="mt-3 rounded-md min-w-40 bg-amber-600 px-2 py-1.5 lg:mx-6 text-xl font-semibold leading-10 text-white shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transform transition duration-300 hover:scale-110"
+                        onClick={handleAddToCart}
+                      >
+                        <span className="flex justify-center text-center items-center gap-2">
+                          <AiFillThunderbolt />
+                          Buy Now
+                        </span>
+                      </button>
+                    </NavLink>
+                  </div>
                   <p className="font text-white lg:text-2xl lg:mt-6 my-3 lg:px-4">
                     {product.description}
                   </p>
@@ -135,7 +158,11 @@ const ProductPage = () => {
           <section>
             <div className="flex border border-orange-500 my-4 mx-4 lg:mx-16 rounded-md flex-col lg:flex-row mt-4">
               <div className="rounded overflow-hidden max-w-sm">
-                <img src={Experience} alt="experience" className="w-full" />
+                <img
+                  src="/Images/Rectangle2.png"
+                  alt="experience"
+                  className="w-full"
+                />
               </div>
               <div className="bg-orange-500">
                 <div className="py-2 px-3">
@@ -153,7 +180,7 @@ const ProductPage = () => {
           </section>
           <section>
             <div className="w-full h-36 flex justify-center items-center quote my-3 lg:mt-8">
-              <div className="bg-black px-2 mx-4 h-18">
+              <div className="bg-[#4b2508] rounded-2xl px-2 mx-4 h-18">
                 <h1 className="text-white font lg:text-4xl px-2 py-2">
                   There is nothing better than a friend unless it is a friend
                   with chocolate.

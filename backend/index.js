@@ -9,6 +9,7 @@ const authRouter = require("./routes/authRoute");
 const productRouter = require("./routes/productRoute");
 const categoryRouter = require("./routes/prodcategoryRoute");
 const uploadRouter = require("./routes/uploadRoute");
+const cartRouter = require("./routes/cartRoute");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -23,7 +24,7 @@ app.use("/api/user", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/upload", uploadRouter);
-
+app.use("/api/cart", cartRouter);
 app.use(notFound);
 app.use(errorHandler);
 app.listen(PORT, () => {

@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import FormatPrice from "../Helper/FormatPrice";
 import { getCategories } from "../Redux/Slices/itemSlice";
 
-const ProductFilter = ({ onFilterChange }) => {
+const ProductFilter = ({ onFilterChange, minPrice, maxPrice }) => {
   const dispatch = useDispatch();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedRating, setSelectedRating] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(maxPrice);
   const { productCategories } = useSelector((state) => state.item);
 
   useEffect(() => {
@@ -77,8 +77,8 @@ const ProductFilter = ({ onFilterChange }) => {
         <input
           type="range"
           name="price"
-          min={0}
-          max={1000}
+          min={minPrice}
+          max={maxPrice}
           value={price}
           onChange={handlePriceChange}
           className="w-full mt-0.2"

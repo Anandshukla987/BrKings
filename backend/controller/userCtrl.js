@@ -12,9 +12,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const randomstring = require("randomstring");
 const nodemailer = require("nodemailer");
-const {hashPassword} = require("../helpers/authHelper");
-
-
+const { hashPassword } = require("../helpers/authHelper");
 
 const sendResetPasswordMail = async (name, email, token) => {
   try {
@@ -51,7 +49,6 @@ const sendResetPasswordMail = async (name, email, token) => {
     });
   }
 };
-
 
 // Create a User ----------------------------------------------
 
@@ -163,7 +160,7 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
   const refreshToken = req.user.refreshToken;
-  console.log(refreshToken)
+  console.log(refreshToken);
 
   // const cookie = req.cookies;
   // if (!cookie?.refreshToken) {
@@ -183,7 +180,7 @@ const logout = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   });
-  
+
   res.sendStatus(204); // no content
 });
 
@@ -345,7 +342,6 @@ const updatePassword = async (req, res) => {
     res.status(400).send({ success: false, message: error.message });
   }
 };
-
 
 const forgotPassword = async (req, res) => {
   try {

@@ -1,27 +1,24 @@
-import * as React from "react";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Logo from "../Images/BrownieKing.png";
 import Stack from "@mui/material/Stack";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import Login from "../Component/Auth/Login";
+import LoginOutBtn from "../Component/Auth/LoginoutBtn/LoginoutBtn";
+import Signup from "../Component/Auth/Signup";
 import Styles from "../Component/Global.module.css";
 import NavTabs from "../Component/NavTabs/NavTabs";
 import "../Component/NavTabs/NavTabs.css";
-import { NavLink, json, useNavigate } from "react-router-dom";
-import Signup from "../Component/Auth/Signup";
-import Login from "../Component/Auth/Login";
-import LoginOutBtn from "../Component/Auth/LoginoutBtn/LoginoutBtn";
-import Button from "@mui/material/Button";
-import "../Component/NavTabs/NavTabs.css";
-import { selectAuthUser, closeLog, loginBox } from "../Redux/Slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { closeLog, loginBox, selectAuthUser } from "../Redux/Slices/authSlice";
 const pages = ["Brownies", "Track Order", "Get in Touch", "about us"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -37,7 +34,7 @@ const Navbar = () => {
     } else {
       dispatch(loginBox());
     }
-  },[authUser.user]);
+  }, [authUser.user]);
 
   const [value, setValue] = React.useState("one");
 
@@ -79,7 +76,7 @@ const Navbar = () => {
                     mr: 1,
                   }}
                 >
-                  <img src={Logo} alt="Brownie King" />
+                  <img src="/Images/BrownieKing.png" alt="Brownie King" />
                   <Typography
                     variant="h6"
                     nowrap="true"
@@ -141,7 +138,7 @@ const Navbar = () => {
                 className={Styles.logo}
                 sx={{ display: { xs: "flex", md: "none" }, mr: 0 }}
               >
-                <img src={Logo} alt="Brownie King" />
+                <img src="/Images/BrownieKing.png" alt="Brownie King" />
               </Box>
               <Typography
                 variant="h6"
@@ -180,7 +177,7 @@ const Navbar = () => {
                 <NavTabs />
               </Stack>
 
-              <LoginOutBtn flag={authUser.user}/>
+              <LoginOutBtn flag={authUser.user} />
 
               <NavLink
                 className="mx-0 transform transition duration-300 hover:scale-110"

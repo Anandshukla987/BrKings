@@ -26,35 +26,52 @@ var productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    quantity: {
-      type: Number,
-      required: true,
-    },
     tags: {
       type: String,
       required: true,
     },
-    sold: {
+    discountPercentage: {
+      type: Number,
+    },
+    ratings: {
       type: Number,
       default: 0,
     },
+    reviews: [
+      {
+        user: {
+          type: mongoose.Schema.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        name: {
+          type: Number,
+          required: true,
+        },
+        rating: {
+          type: Number,
+          required: true,
+        },
+        comment: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    stock: { type: Number, min: [0, "wrong min stock"], default: 0 },
+    size: {
+      type: String,
+      required: true,
+      enum: ["4-pack", "8-pack", "0.5kg", "1kg", "2kg"], // Add all possible sizes
+    },
+    discountPrice: { type: Number },
+    deleted: { type: Boolean, default: false },
     images: [
       {
         public_id: String,
         url: String,
       },
     ],
-    ratings: [
-      {
-        star: Number,
-        comment: String,
-        postedby: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-      },
-    ],
-    totalrating: {
-      type: String,
-      default: 0,
-    },
   },
   { timestamps: true }
 );

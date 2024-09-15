@@ -1,23 +1,23 @@
-import { Route, Routes } from "react-router-dom";
 import { React } from "react";
-import Home from "./Component/Header/Home";
-import "./app.scss";
+import { Route, Routes } from "react-router-dom";
 import Navbar from "../src/Navbar/Navbar";
 import Cart from "./Component/Cart/Cart";
 import Error from "./Component/Error";
 import Footer from "./Component/Footer";
-import ProductPage from "./Component/Product/ProductPage";
 import ForgotPass from "./Component/ForgotPass";
-import ResetPass from "./Component/ResetPass";
-import ProtectedRoute from "./Component/ProtectedRoute";
 import Brownies from "./Component/Header/Brownies";
+import Home from "./Component/Header/Home";
+import ProductPage from "./Component/Product/ProductPage";
+import ProtectedRoute from "./Component/ProtectedRoute";
+import ResetPass from "./Component/ResetPass";
+import "./app.scss";
 
 const Routing = () => {
   return (
     <>
       <Routes>
-        <Route element={<ProtectedRoute/>}>
-        <Route path="/cart" element={<Cart />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/cart" element={<Cart />} />
         </Route>
         <Route exact path="/" element={<Home />} />
         <Route path="/brownies" element={<Brownies />} />

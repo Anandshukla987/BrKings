@@ -1,26 +1,25 @@
-.font{
-    font-family: 'Amita';
+.font {
+  font-family: "Amita";
 }
 
-.pieces{
-    color: #DE6901;
-    background: transparent;
-    border-color: #DE6901;
-    height: fit-content;
-    font-family: 'Amita';
+.quote {
+  background-image: url("../../../public/Images/image8.png");
 }
 
-.quote{
-    background-image: url('../../Images/image 8.png');
+.pieces {
+  color: #de6901;
+  background: transparent;
+  border-color: #de6901;
+  height: fit-content;
+  font-family: "Amita";
 }
 
-.border{
-    border: 3px solid linear-gradient(180deg, #A0616A 0%, #622A20 100%);;
-    /* border-image-source: linear-gradient(180deg, #A0616A 0%, #622A20 100%); */
+.border {
+  border: 3px solid linear-gradient(180deg, #a0616a 0%, #622a20 100%);
+  /* border-image-source: linear-gradient(180deg, #A0616A 0%, #622A20 100%); */
 }
 
-
-.selected{
-    background-color: #DE6901;
-    color: black;
+.selected {
+  background-color: #de6901;
+  color: black;
 }

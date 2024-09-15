@@ -1,15 +1,13 @@
 import { useFormik } from "formik";
 import { React, useEffect, useState } from "react";
+import Dropzone from "react-dropzone";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import * as yup from "yup";
 import CustomInput from "../components/CustomInput";
 import { getCategories } from "../features/pcategory/pcategorySlice";
-// import { Select } from "antd";
-import Dropzone from "react-dropzone";
 import {
   createProducts,
   getAProduct,
@@ -17,16 +15,20 @@ import {
   updateAProduct,
 } from "../features/product/productSlice";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
+
+// Updated validation schema
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
   description: yup.string().required("Description is Required"),
   price: yup.number().required("Price is Required"),
   category: yup.string().required("Category is Required"),
   tags: yup.string().required("Tag is Required"),
-  quantity: yup.number().required("Quantity is Required"),
+  stock: yup.number().required("Quantity is Required"),
+  size: yup.string().required("Size is Required"),
+  discountPercentage: yup.number(),
 });
 
-const Addproduct = () => {
+const AddProduct = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const getPId = location.pathname.split("/")[3];
@@ -36,17 +38,15 @@ const Addproduct = () => {
   const imgState = useSelector((state) => state.upload.images);
   const newProduct = useSelector((state) => state.product);
   const {
-    isSuccess,
-    isError,
-    isLoading,
-    createdProduct,
     savedTitle,
     savedDescription,
     savedPrice,
     savedCategory,
     savedTags,
-    savedQuantity,
-    updatedProduct,
+    savedStock,
+    savedSize,
+    savedDiscountPercentage,
+    savedImages,
   } = newProduct;
 
   useEffect(() => {
@@ -59,26 +59,18 @@ const Addproduct = () => {
     } else {
       dispatch(resetState());
     }
-  }, [getPId]);
+  }, [dispatch, getPId]);
 
   useEffect(() => {
-    if (isSuccess && createdProduct) {
-      toast.success("Product Added Successfullly!");
-    }
-    if (isSuccess && updatedProduct) {
-      toast.success("Product Updated Successfullly!");
-      navigate("/admin/list-product");
-    }
-    if (isError) {
-      toast.error("Something Went Wrong!");
-    }
-  }, [isSuccess, isError, isLoading]);
-
-  const img = [];
-
-  useEffect(() => {
-    formik.values.images = img;
-  }, []);
+    // Sync uploaded images to formik values
+    formik.setFieldValue(
+      "images",
+      imgState.map((i) => ({
+        public_id: i.public_id,
+        url: i.url,
+      }))
+    );
+  }, [imgState]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -88,34 +80,24 @@ const Addproduct = () => {
       price: savedPrice || "",
       category: savedCategory || "",
       tags: savedTags || "",
-      quantity: savedQuantity || "",
-      images: [],
+      stock: savedStock || "",
+      size: savedSize || "",
+      images: savedImages || [],
+      discountPercentage: savedDiscountPercentage || "",
     },
     validationSchema: schema,
-
     onSubmit: (values) => {
-      imgState.forEach((i) => {
-        img.push({
-          public_id: i.public_id,
-          url: i.url,
-        });
-      });
-      formik.values.images = img;
-      // console.log("values",values);
-
       if (getPId !== undefined) {
         const updateData = {
           id: getPId,
           pData: values,
         };
-        console.log("aaajaaaa", getPId, "data", updateData);
         dispatch(updateAProduct(updateData));
         dispatch(resetState());
+        navigate("/products");
       } else {
-        console.log("adprdcts", values);
         dispatch(createProducts(values));
         formik.resetForm();
-        console.log("values", values);
         setTimeout(() => {
           dispatch(resetState());
         }, 3000);
@@ -133,6 +115,7 @@ const Addproduct = () => {
           onSubmit={formik.handleSubmit}
           className="d-flex gap-3 flex-column"
         >
+          {/* Product Title */}
           <CustomInput
             type="text"
             label="Enter Product Title"
@@ -144,6 +127,8 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.title && formik.errors.title}
           </div>
+
+          {/* Product Description */}
           <div className="">
             <ReactQuill
               theme="snow"
@@ -155,6 +140,8 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.description && formik.errors.description}
           </div>
+
+          {/* Product Price */}
           <CustomInput
             type="number"
             label="Enter Product Price"
@@ -167,6 +154,7 @@ const Addproduct = () => {
             {formik.touched.price && formik.errors.price}
           </div>
 
+          {/* Product Category */}
           <select
             name="category"
             onChange={formik.handleChange("category")}
@@ -176,17 +164,17 @@ const Addproduct = () => {
             id=""
           >
             <option value="">Select Category</option>
-            {catState.map((i, j) => {
-              return (
-                <option key={j} value={i.title}>
-                  {i.title}
-                </option>
-              );
-            })}
+            {catState.map((i, j) => (
+              <option key={j} value={i.title}>
+                {i.title}
+              </option>
+            ))}
           </select>
           <div className="error">
             {formik.touched.category && formik.errors.category}
           </div>
+
+          {/* Product Tags */}
           <select
             name="tags"
             onChange={formik.handleChange("tags")}
@@ -196,7 +184,7 @@ const Addproduct = () => {
             id=""
           >
             <option value="" disabled>
-              Select Category
+              Select Tag
             </option>
             <option value="featured">Featured</option>
             <option value="popular">Popular</option>
@@ -206,18 +194,54 @@ const Addproduct = () => {
             {formik.touched.tags && formik.errors.tags}
           </div>
 
+          {/* Product Stock */}
           <CustomInput
             type="number"
             label="Enter Product Quantity"
-            name="quantity"
-            onChng={formik.handleChange("quantity")}
-            onBlr={formik.handleBlur("quantity")}
-            val={formik.values.quantity}
+            name="stock"
+            onChng={formik.handleChange("stock")}
+            onBlr={formik.handleBlur("stock")}
+            val={formik.values.stock}
           />
           <div className="error">
-            {formik.touched.quantity && formik.errors.quantity}
+            {formik.touched.stock && formik.errors.stock}
           </div>
-          <div className="bg-white border-1 p-5 text-center">
+
+          {/* Product Size */}
+          <select
+            name="size"
+            onChange={formik.handleChange("size")}
+            onBlur={formik.handleBlur("size")}
+            value={formik.values.size}
+            className="form-control py-3 mb-3"
+          >
+            <option value="">Select Size</option>
+            <option value="4-pack">4-pack</option>
+            <option value="8-pack">8-pack</option>
+            <option value="0.5kg">0.5kg</option>
+            <option value="1kg">1kg</option>
+            <option value="2kg">2kg</option>
+          </select>
+          <div className="error">
+            {formik.touched.size && formik.errors.size}
+          </div>
+
+          {/* Discount Percentage */}
+          <CustomInput
+            type="number"
+            label="Enter Discount Percentage"
+            name="discountPercentage"
+            onChng={formik.handleChange("discountPercentage")}
+            onBlr={formik.handleBlur("discountPercentage")}
+            val={formik.values.discountPercentage}
+          />
+          <div className="error">
+            {formik.touched.discountPercentage &&
+              formik.errors.discountPercentage}
+          </div>
+
+          {/* Image Upload Section */}
+          <div className="bg-white cursor-pointer border-1 p-5 text-center">
             <Dropzone
               onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}
             >
@@ -234,7 +258,7 @@ const Addproduct = () => {
             </Dropzone>
           </div>
           <div className="showimages d-flex flex-wrap gap-3">
-            {imgState?.map((i, j) => {
+            {formik.values.images.map((i, j) => {
               return (
                 <div className=" position-relative" key={j}>
                   <button
@@ -260,4 +284,4 @@ const Addproduct = () => {
   );
 };
 
-export default Addproduct;
+export default AddProduct;

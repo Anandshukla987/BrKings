@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import productService from "./productService";
 
 export const getProducts = createAsyncThunk(
@@ -15,6 +15,7 @@ export const createProducts = createAsyncThunk(
   "product/create-products",
   async (productData, thunkAPI) => {
     try {
+      console.log(productData);
       return await productService.createProduct(productData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -28,7 +29,7 @@ export const updateAProduct = createAsyncThunk(
       return await productService.updateProduct(updateData);
     } catch (error) {
       // Extract relevant information from the error
-      const errorMessage = error.response?.data?.message || 'Unknown error';
+      const errorMessage = error.response?.data?.message || "Unknown error";
 
       // Return only serializable data
       return { message: errorMessage };
@@ -116,7 +117,7 @@ export const productSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.payload.message || 'Unknown error';
+        state.message = action.payload.message || "Unknown error";
       })
       .addCase(deleteAProduct.pending, (state) => {
         state.isLoading = true;
@@ -145,7 +146,10 @@ export const productSlice = createSlice({
         state.savedPrice = action.payload.price;
         state.savedCategory = action.payload.category;
         state.savedTags = action.payload.tags;
-        state.savedQuantity = action.payload.quantity;
+        state.savedStock = action.payload.stock;
+        state.savedSize = action.payload.size; // Add size to state
+        state.savedDiscountPercentage = action.payload.discountPercentage; // Add discount percentage to state
+        state.savedImages = action.payload.images; // Add images to state
       })
       .addCase(getAProduct.rejected, (state, action) => {
         state.isLoading = false;

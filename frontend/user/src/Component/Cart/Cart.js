@@ -1,74 +1,134 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import EmptyCart from "../../Images/Free market or Amazon.jpeg";
-// import CartPro from "../../Redux/API/items.json";
-import CartProduct from "./CartProduct";
+import { useEffect } from "react";
+import { FaArrowRight } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink } from "react-router-dom";
+import FormatPrice from "../../Helper/FormatPrice";
+import { fetchCartItems } from "../../Redux/Slices/CartSlice";
 import "./Cart.css";
-import {
-  getCartTotal,
-} from "../../Redux/Slices/Cart";
+import CartItem from "./CartItem";
 
 const Cart = () => {
-  const { cart, totalQuantity, totalPrice } = useSelector(
-    (state) => state.cart
-  );
-
   const dispatch = useDispatch();
 
+  // Get cart items and loading/error states from the Redux store
+  const { cartItems } = useSelector((state) => state.cart);
+
+  // Fetch cart items when the component mounts
   useEffect(() => {
-    dispatch(getCartTotal());
-  }, [cart]);
+    dispatch(fetchCartItems("_"));
+  }, [dispatch]);
+
+  console.log(cartItems.length, cartItems);
+
+  // Calculate total price dynamically
+  const totalPrice = cartItems.reduce((acc, item) => {
+    const itemTotal = item.product.price * item.quantity;
+    return acc + itemTotal;
+  }, 0);
 
   return (
     <div className="max-w-container bg-black ">
       <div id="header">
         <p>YOUR CART</p>
       </div>
-      {cart?.length > 0 ? (
+      {cartItems?.length > 0 ? (
         <div>
-          <div className="py-2 px-2 bg-black ">
+          <div className="py-2 px-4 bg-black ">
             <div className="md:flex-row flex-col flex my-4 mx-3">
               <div className="md:w-[70%] md:pr-3">
                 <div className="px-2 mb-4 flex-col">
                   <div className=" flex justify-center py-3 border">
                     <h5 className="mb-0 text-white">
-                      Cart - {cart.length} items
+                      Cart - {cartItems.length} items
                     </h5>
                   </div>
                   <div className="card-body">
-                    {cart?.map((data) => (
-                      <div key={data._id}>
-                        <CartProduct data={data} />
+                    {cartItems.map((cartItem) => (
+                      <div key={cartItem._id}>
+                        <CartItem
+                          product={cartItem.product}
+                          quantity={cartItem.quantity}
+                        />
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
               <div className="md:w-[30%] border h-[50%]">
-                <div className="flex flex-col mb-4">
-                  <div className="flex text-white justify-center py-3">
-                    <h5>Summary</h5>
-                  </div>
-                  <div className="border-t px-2 pt-2">
-                    <div className="flex text-white justify-between my-2">
-                      Total Quantity
-                      <span>{totalQuantity}</span>
-                    </div>
+                <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+                  <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
+                    <p class="text-xl font-semibold text-gray-900 dark:text-white">
+                      Order summary
+                    </p>
 
-                    <div className="flex text-white justify-between my-2">
-                      <div>
-                        <strong>Total amount</strong>
+                    <div class="space-y-4">
+                      <div class="space-y-2">
+                        <dl class="flex items-center justify-between gap-4">
+                          <dt class="text-base font-normal text-gray-500 dark:text-gray-400">
+                            Original price
+                          </dt>
+                          <dd class="text-base font-medium text-gray-900 dark:text-white">
+                            $7,592.00
+                          </dd>
+                        </dl>
+
+                        <dl class="flex items-center justify-between gap-4">
+                          <dt class="text-base font-normal text-gray-500 dark:text-gray-400">
+                            Savings
+                          </dt>
+                          <dd class="text-base font-medium text-green-600">
+                            -$299.00
+                          </dd>
+                        </dl>
+
+                        <dl class="flex items-center justify-between gap-4">
+                          <dt class="text-base font-normal text-gray-500 dark:text-gray-400">
+                            Store Pickup
+                          </dt>
+                          <dd class="text-base font-medium text-gray-900 dark:text-white">
+                            $99
+                          </dd>
+                        </dl>
+
+                        <dl class="flex items-center justify-between gap-4">
+                          <dt class="text-base font-normal text-gray-500 dark:text-gray-400">
+                            Tax
+                          </dt>
+                          <dd class="text-base font-medium text-gray-900 dark:text-white">
+                            $799
+                          </dd>
+                        </dl>
                       </div>
-                      <span>
-                        <strong>₹{totalPrice}</strong>
-                      </span>
+
+                      <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                        <dt class="text-base font-bold text-gray-900 dark:text-white">
+                          Total
+                        </dt>
+                        <dd class="text-base font-bold text-gray-900 dark:text-white">
+                          <FormatPrice price={totalPrice} />
+                        </dd>
+                      </dl>
                     </div>
 
-                    <button className="bg-primeColor border rounded-md cursor-pointer hover:bg-orange-600 active:bg-orange-900 px-9 py-2 font-titleFont font-semibold text-lg text-orange-400 hover:text-black duration-300">
-                      Go to Checkout
-                    </button>
+                    <NavLink>
+                      <button class="flex w-full items-center mt-4 justify-center rounded-lg bg-amber-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-amber-800 focus:outline-none focus:ring-4 focus:ring-amber-300 dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800">
+                        Proceed to Checkout
+                      </button>
+                    </NavLink>
+
+                    <div class="flex items-center justify-center gap-2">
+                      <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                        {" "}
+                        or{" "}
+                      </span>
+                      <NavLink to="/">
+                        <span class="inline-flex items-center gap-2 text-sm font-medium text-amber-700 underline hover:no-underline dark:text-amber-500">
+                          Continue Shopping
+                          <FaArrowRight />
+                        </span>
+                      </NavLink>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -85,7 +145,7 @@ const Cart = () => {
           <div>
             <img
               className="w-80 rounded-lg p-2 mx-auto"
-              src={EmptyCart}
+              src="/Images/EmptyCart.jpeg"
               alt="emptyCart"
             />
           </div>

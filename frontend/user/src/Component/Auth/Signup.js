@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import Logo from "../../Images/BrownieKing.png";
-import Cookie from "../../Images/brauni-ai (1) 1.png";
-import { Link } from "react-router-dom";
-import { loginBox, closeSign, signin } from "../../Redux/Slices/authSlice";
-import { useDispatch } from "react-redux";
 import CancelIcon from "@mui/icons-material/Cancel";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { closeSign, loginBox, signin } from "../../Redux/Slices/authSlice";
 import "./Login.css";
 
 const Signup = () => {
@@ -26,7 +24,7 @@ const Signup = () => {
 
   const postData = async (e) => {
     e.preventDefault();
-    dispatch(signin(user))
+    dispatch(signin(user));
   };
 
   return (
@@ -43,7 +41,7 @@ const Signup = () => {
           <div className="logo">
             <img
               className="mx-auto h-25 w-auto"
-              src={Logo}
+              src="/Images/BrownieKing.png"
               alt="Brownie King"
             />
             <h2 className="brownie text-center text-rose-550 ">Brownie King</h2>
@@ -132,7 +130,7 @@ const Signup = () => {
               </p>
             </div>
             <div className="cookie hidden md:block">
-              <img src={Cookie} alt="Cookie" />
+              <img src="/Images/brauni-ai.png" alt="Cookie" />
             </div>
           </div>
         </div>

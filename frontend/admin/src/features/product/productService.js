@@ -1,5 +1,6 @@
 import axios from "axios";
-import {Axios} from "../../utils/axiosconfig";
+import { toast } from "react-toastify";
+import { Axios } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const getProducts = async () => {
@@ -8,9 +9,10 @@ const getProducts = async () => {
   return response.data;
 };
 const createProduct = async (product) => {
-  console.log(product);
   const response = await Axios.post(`${base_url}product/`, product);
-
+  if (response.data) {
+    toast.success("Product Added Successfully!");
+  }
   return response.data;
 };
 
@@ -22,13 +24,20 @@ const getProduct = async (id) => {
 
 const deleteProduct = async (id) => {
   const response = await Axios.delete(`${base_url}product/${id}`);
-
+  if (response.data) {
+    toast.info("Product Deleted Successfully!");
+  }
   return response.data;
 };
 const updateProduct = async (updateData) => {
   console.log(updateData);
-  const response = await Axios.put(`${base_url}product/${updateData.id}`, updateData.pData);
-
+  const response = await Axios.put(
+    `${base_url}product/${updateData.id}`,
+    updateData.pData
+  );
+  if (response.data) {
+    toast.success("Product Updated Successfully!");
+  }
   return response.data;
 };
 

@@ -1,17 +1,17 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import uploadService from "./uploadService";
 
 export const uploadImg = createAsyncThunk(
   "upload/images",
-  async (data, thunkAPI) => {
+  async (files, thunkAPI) => {
     try {
       const formData = new FormData();
-      for (let i = 0; i < data.length; i++) {
-        formData.append("images", data[i]);
-      }
+      files.forEach((file) => {
+        formData.append("images", file); // Ensure "images" matches multer field name
+      });
       return await uploadService.uploadImg(formData);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
