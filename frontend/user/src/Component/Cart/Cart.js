@@ -20,10 +20,19 @@ const Cart = () => {
   }, [dispatch]);
 
   // console.log(cartItems.length, cartItems);
+  const Pickup_Charges = 300;
+
+  const OriginalPrice = cartItems.reduce((acc, item) => {
+    const itemTotal = item.product.price * item.quantity;
+    return acc + itemTotal;
+  }, 0);
 
   // Calculate total price dynamically
   const totalPrice = cartItems.reduce((acc, item) => {
-    const itemTotal = item.product.price * item.quantity;
+    const itemTotal =
+      (item.product.price -
+        item.product?.discountPercentage * (item.product?.price / 100)) *
+      item.quantity;
     return acc + itemTotal;
   }, 0);
 
@@ -69,7 +78,7 @@ const Cart = () => {
                             Original price
                           </dt>
                           <dd class="text-base font-medium text-gray-900 dark:text-white">
-                            $7,592.00
+                            <FormatPrice price={OriginalPrice} />
                           </dd>
                         </dl>
 
@@ -78,16 +87,16 @@ const Cart = () => {
                             Savings
                           </dt>
                           <dd class="text-base font-medium text-green-600">
-                            -$299.00
+                            -<FormatPrice price={OriginalPrice - totalPrice} />
                           </dd>
                         </dl>
 
                         <dl class="flex items-center justify-between gap-4">
                           <dt class="text-base font-normal text-gray-500 dark:text-gray-400">
-                            Store Pickup
+                            Pickup Charges
                           </dt>
                           <dd class="text-base font-medium text-gray-900 dark:text-white">
-                            $99
+                            <FormatPrice price={Pickup_Charges} />
                           </dd>
                         </dl>
 
@@ -96,7 +105,7 @@ const Cart = () => {
                             Tax
                           </dt>
                           <dd class="text-base font-medium text-gray-900 dark:text-white">
-                            $799
+                            <FormatPrice price={0} />
                           </dd>
                         </dl>
                       </div>
@@ -106,7 +115,7 @@ const Cart = () => {
                           Total
                         </dt>
                         <dd class="text-base font-bold text-gray-900 dark:text-white">
-                          <FormatPrice price={totalPrice} />
+                          <FormatPrice price={totalPrice + Pickup_Charges} />
                         </dd>
                       </dl>
                     </div>

@@ -177,8 +177,6 @@ const Navbar = () => {
                 <NavTabs />
               </Stack>
 
-              <LoginOutBtn flag={authUser.user} />
-
               <NavLink
                 className="mx-0 transform transition duration-300 hover:scale-110"
                 to="/Cart"
@@ -191,6 +189,7 @@ const Navbar = () => {
                   <AddShoppingCartIcon />
                 </IconButton>
               </NavLink>
+              <LoginOutBtn flag={authUser.user} />
             </Toolbar>
           </Container>
         </AppBar>

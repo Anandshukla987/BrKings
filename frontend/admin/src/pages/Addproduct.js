@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { React, useEffect, useState } from "react";
+import { React, useEffect } from "react";
 import Dropzone from "react-dropzone";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -33,7 +33,7 @@ const AddProduct = () => {
   const dispatch = useDispatch();
   const getPId = location.pathname.split("/")[3];
   const navigate = useNavigate();
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const catState = useSelector((state) => state.pCategory.pCategories);
   const imgState = useSelector((state) => state.upload.images);
   const newProduct = useSelector((state) => state.product);
@@ -94,7 +94,7 @@ const AddProduct = () => {
         };
         dispatch(updateAProduct(updateData));
         dispatch(resetState());
-        navigate("/products");
+        navigate("/admin/list-product");
       } else {
         dispatch(createProducts(values));
         formik.resetForm();
@@ -276,7 +276,7 @@ const AddProduct = () => {
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
           >
-            {getPId !== undefined ? "Edit" : "Add"} Product
+            {getPId !== undefined ? "Update" : "Add"} Product
           </button>
         </form>
       </div>

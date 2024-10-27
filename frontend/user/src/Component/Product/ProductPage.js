@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { FaCartArrowDown } from "react-icons/fa";
@@ -5,6 +6,8 @@ import { TbReceiptTax } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import FormatPrice from "../../Helper/FormatPrice";
+import QuantitySelector from "../../Helper/QuantitySelector";
+import WeightSelector from "../../Helper/WeightSelector";
 import { addProductToCart } from "../../Redux/Slices/CartSlice";
 import {
   getProductByIdAsync,
@@ -14,7 +17,6 @@ import {
 } from "../../Redux/Slices/itemSlice";
 import ImageGallery from "../../common/ImageGallery";
 import Loader from "../../common/Loader/Loading";
-import CustomButton from "../../common/ProdCardbutton";
 import LikeProduct from "../ProductCard/LikeProduct";
 import "./Product.css";
 
@@ -29,6 +31,8 @@ const ProductPage = () => {
   const product = useSelector(selectProductById);
   const status = useSelector(selectProductStatus);
   const error = useSelector(selectProductError);
+  const discount_price =
+    product?.price - product?.discountPercentage * (product?.price / 100);
 
   const handleButtonClick = (quantity) => {
     setSelectedButton(quantity);
@@ -84,7 +88,10 @@ const ProductPage = () => {
                     {product.title}
                   </h1>
                   <h4 className="text-semibold text-xl lg:text-2xl my-3 text-white font">
-                    <FormatPrice price={product?.price} />
+                    <div className=" line-through">
+                      <FormatPrice price={product?.price} />
+                    </div>
+                    <FormatPrice price={discount_price} />
                     <p className=" text-base flex flex-row items-center">
                       <span className="p-1.5">
                         <TbReceiptTax />
@@ -99,32 +106,16 @@ const ProductPage = () => {
                 </div>
                 <div className="flex flex-col gap-2 max-w-screen-md mt-4">
                   {product?.category === "Jar-cake" ? (
-                    <div className="flex flex-col space-y-2">
-                      <p className="text-white">Weight in Kg</p>
-                      <select
-                        value={weight}
-                        onChange={handleWeightChange}
-                        className="p-2 border rounded-md text-lg bg-black text-white"
-                      >
-                        {[0.5, 1, 1.5, 2].map((wt) => (
-                          <option key={wt} value={wt}>
-                            {wt} Kg
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <WeightSelector
+                      weight={weight}
+                      handleWeightChange={handleWeightChange}
+                    />
                   ) : (
-                    <div className="grid grid-cols-2 justify-items-stretch px-3 lg:max-w-lg gap-4 h-48">
-                      <p className="text-white">Quantity</p>
-                      {quantities.map((quantity, index) => (
-                        <CustomButton
-                          key={index}
-                          label={`${quantity} Brownies`}
-                          onClick={() => handleButtonClick(quantity)}
-                          isSelected={selectedButton === quantity}
-                        />
-                      ))}
-                    </div>
+                    <QuantitySelector
+                      quantities={quantities}
+                      selectedButton={selectedButton}
+                      handleButtonClick={handleButtonClick}
+                    />
                   )}
                   <div className="flex justify-around flex-wrap">
                     <button
@@ -148,9 +139,13 @@ const ProductPage = () => {
                       </button>
                     </NavLink>
                   </div>
-                  <p className="font text-white lg:text-2xl lg:mt-6 my-3 lg:px-4">
-                    {product.description}
-                  </p>
+                  <h4 className="font text-white lg:mt-6 my-3 lg:px-4">
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(product.description),
+                      }}
+                    />
+                  </h4>
                 </div>
               </div>
             </div>

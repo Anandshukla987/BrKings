@@ -23,3 +23,13 @@
   background-color: #de6901;
   color: black;
 }
+
+ul,
+ol {
+  padding-left: 16px; /* or any value that works for your layout */
+  list-style-type: initial; /* Makes sure bullets or numbers are shown */
+}
+
+li {
+  margin-bottom: 5px; /* Provides space between items */
+}
